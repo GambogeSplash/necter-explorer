@@ -187,10 +187,10 @@ export default function StakingPage() {
               <Tooltip
                 contentStyle={tooltipStyle}
                 labelStyle={{ color: "#777470" }}
-                formatter={(v: number) => [
+                formatter={((v: number) => [
                   `${(v / 1_000_000).toFixed(2)}M NECTA`,
                   "Staked",
-                ]}
+                ]) as never}
               />
               <Area
                 type="monotone"
@@ -240,7 +240,7 @@ export default function StakingPage() {
               <Tooltip
                 contentStyle={tooltipStyle}
                 labelStyle={{ color: "#777470" }}
-                formatter={(v: number) => [`${v.toFixed(2)}%`, "APY"]}
+                formatter={((v: number) => [`${v.toFixed(2)}%`, "APY"]) as never}
               />
               <Area
                 type="monotone"
@@ -280,10 +280,10 @@ export default function StakingPage() {
               </Pie>
               <Tooltip
                 contentStyle={tooltipStyle}
-                formatter={(v: number) => [
+                formatter={((v: number) => [
                   `${(v / 1_000_000).toFixed(2)}M NECTA`,
                   "Staked",
-                ]}
+                ]) as never}
               />
             </PieChart>
           </ResponsiveContainer>

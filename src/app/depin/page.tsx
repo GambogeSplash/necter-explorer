@@ -152,10 +152,10 @@ export default function DePINPage() {
               </Pie>
               <Tooltip
                 contentStyle={tooltipStyle}
-                formatter={(v: number) => [
+                formatter={((v: number) => [
                   `${(v / 1_000_000).toFixed(2)}M NECTA`,
                   "Staked",
-                ]}
+                ]) as never}
               />
             </PieChart>
           </ResponsiveContainer>

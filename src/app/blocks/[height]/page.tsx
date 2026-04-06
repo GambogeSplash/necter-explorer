@@ -136,7 +136,7 @@ export default function BlockDetailPage({ params }: { params: Promise<{ height: 
                         <Cell key={entry.name} fill={gasColors[entry.name] ?? "#A8A89C"} />
                       ))}
                     </Pie>
-                    <Tooltip contentStyle={CHART_TOOLTIP} formatter={(v: number) => [`${(v / 1000).toFixed(1)}K gas`, ""]} />
+                    <Tooltip contentStyle={CHART_TOOLTIP} formatter={((v: number) => [`${(v / 1000).toFixed(1)}K gas`, ""]) as never} />
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="space-y-1.5 mt-2">
