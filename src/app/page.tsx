@@ -266,12 +266,12 @@ export default function OverviewPage() {
           </div>
 
           {/* Mempool */}
-          <div>
+          <div className="flex flex-col">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-[22px] font-semibold">Mempool</h2>
               <span className="text-[12px] text-muted-foreground font-mono-data">{mempoolTotal.toLocaleString()} pending</span>
             </div>
-            <div className="bg-card border border-border rounded-lg p-5">
+            <div className="bg-card border border-border rounded-lg p-5 flex-1 flex flex-col">
               <div className="flex items-center gap-6 mb-4">
                 <div className="relative w-[120px] h-[120px] shrink-0">
                   <ResponsiveContainer width="100%" height="100%">
