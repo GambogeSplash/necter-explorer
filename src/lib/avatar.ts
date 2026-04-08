@@ -2,7 +2,7 @@
 // Creates a unique colored geometric pattern for each address
 
 const COLORS = [
-  "#FFC933", "#22C55E", "#6E9FFF", "#F2994A", "#9985FF",
+  "#FFC933", "#22C55E", "#6E9FFF", "#EB5757", "#6E9FFF",
   "#EB5757", "#FF6B8A", "#36CFC9", "#B37FEB", "#73D13D",
 ];
 

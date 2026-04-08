@@ -41,8 +41,7 @@ export function ConnectWalletModal({ open, onClose }: ConnectWalletModalProps) {
       >
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
-            <Wallet className="h-5 w-5 text-primary" />
-            <h2 className="text-lg font-semibold">Connect Wallet</h2>
+                        <h2 className="text-lg font-semibold">Connect Wallet</h2>
           </div>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
             <X className="h-5 w-5" />

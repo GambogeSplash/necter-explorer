@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Settings, Monitor, Sun, Bell, Code2, Trash2, Check } from "lucide-react";
+import { Monitor, Sun, Bell, Code2, Trash2, Check } from "lucide-react";
 import { PageTitle } from "@/components/page-title";
 import { showToast } from "@/components/toast";
 
@@ -45,19 +45,13 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <PageTitle title="Settings" />
 
       {/* Header */}
-      <div className="flex items-center gap-2.5">
-        <div className="rounded-lg bg-secondary p-2">
-          <Settings className="h-5 w-5 text-primary" />
+      <div>
+        <h1 className="text-xl font-semibold tracking-tight">Settings</h1>
         </div>
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">Settings</h1>
-          <p className="text-xs text-muted-foreground mt-0.5">Manage your preferences</p>
-        </div>
-      </div>
 
       <div className="max-w-2xl space-y-6">
         {/* Display Preferences */}
@@ -70,8 +64,7 @@ export default function SettingsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <p className="text-sm font-medium">Currency</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Display prices in your preferred currency</p>
-              </div>
+                </div>
               <select
                 value={currency}
                 onChange={(e) => handleCurrencyChange(e.target.value as Currency)}
@@ -87,8 +80,7 @@ export default function SettingsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <p className="text-sm font-medium">Theme</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Choose your interface theme</p>
-              </div>
+                </div>
               <div className="flex items-center gap-2">
                 <button className="flex items-center gap-1.5 rounded-lg border border-primary bg-primary/10 px-3 py-1.5 text-sm text-primary">
                   <Monitor className="h-3.5 w-3.5" />
@@ -107,8 +99,7 @@ export default function SettingsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <p className="text-sm font-medium">Data Density</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Adjust row spacing in tables and lists</p>
-              </div>
+                </div>
               <div className="flex items-center rounded-lg border border-border overflow-hidden">
                 <button
                   onClick={() => handleDensityChange("comfortable")}
@@ -156,8 +147,7 @@ export default function SettingsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <p className="text-sm font-medium">Watchlist Activity</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Get notified about activity on watched addresses and tokens</p>
-              </div>
+                </div>
               <button
                 onClick={() => setWatchlistAlerts(!watchlistAlerts)}
                 className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${watchlistAlerts ? "bg-primary" : "bg-secondary"}`}
@@ -179,10 +169,7 @@ export default function SettingsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <p className="text-sm font-medium">Developer Mode</p>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Toggle developer mode from the header bar.
-                </p>
-              </div>
+                </div>
               <div className="flex items-center gap-2">
                 <Code2 className="h-4 w-4 text-muted-foreground" />
                 <span className="text-xs text-muted-foreground">Use header toggle</span>
@@ -192,8 +179,7 @@ export default function SettingsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <p className="text-sm font-medium">Clear All Local Data</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Remove all saved preferences, watchlist, and cached data</p>
-              </div>
+                </div>
               <button
                 onClick={handleClearData}
                 className="flex items-center gap-1.5 rounded-lg border border-[#EB5757]/30 bg-[#EB5757]/10 px-3 py-1.5 text-sm text-[#EB5757] hover:bg-[#EB5757]/20 transition-colors"

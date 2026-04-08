@@ -40,12 +40,10 @@ export default function IoTPage() {
   const pagedGateways = gateways.slice((page - 1) * pageSize, page * pageSize);
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <PageTitle title="IoT Gateways" />
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">IoT & Gateways</h1>
-        </div>
+        <h1 className="text-xl font-semibold tracking-tight">IoT &amp; Gateways</h1>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -97,7 +95,7 @@ export default function IoTPage() {
             { label: "Total Data Processed", value: "1.4 TB", icon: Database, color: "text-[#6E9FFF]" },
             { label: "Avg Batch Size", value: "247 records", icon: Activity, color: "text-[#FFC933]" },
             { label: "Peak Throughput", value: "1,284 batches/hr", icon: Zap, color: "text-[#22C55E]" },
-            { label: "Error Rate", value: "0.02%", icon: AlertTriangle, color: "text-[#9985FF]" },
+            { label: "Error Rate", value: "0.02%", icon: AlertTriangle, color: "text-[#6E9FFF]" },
           ].map((metric) => (
             <div key={metric.label} className="rounded-lg bg-card border border-border flex items-center gap-4 px-5 py-3.5">
               <div className="rounded-lg bg-secondary p-2.5 shrink-0">
@@ -124,7 +122,7 @@ export default function IoTPage() {
             <span className="text-right font-mono-data">{parseInt(gw.stake).toLocaleString()}</span>
             <div className="flex items-center gap-2">
               <div className="w-12 h-1 bg-secondary rounded-full overflow-hidden">
-                <div className={`h-full rounded-full bar-fill ${gw.uptime > 95 ? "bg-[#22C55E]" : gw.uptime > 80 ? "bg-[#F2994A]" : "bg-[#EB5757]"}`} style={{ width: `${Math.min(gw.uptime, 100)}%` }} />
+                <div className={`h-full rounded-full bar-fill ${gw.uptime > 95 ? "bg-[#22C55E]" : gw.uptime > 80 ? "bg-[#EB5757]" : "bg-[#EB5757]"}`} style={{ width: `${Math.min(gw.uptime, 100)}%` }} />
               </div>
               <span className="font-mono-data text-xs text-muted-foreground">{gw.uptime.toFixed(1)}%</span>
             </div>

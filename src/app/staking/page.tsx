@@ -38,7 +38,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const medals = ["text-[#FFC933]", "text-[#A8A89C]", "text-[#F2994A]"];
+const medals = ["text-[#FFC933]", "text-[#A8A89C]", "text-[#EB5757]"];
 
 const tooltipStyle = {
   backgroundColor: "#131315",
@@ -53,29 +53,6 @@ const PAGE_SIZE = 25;
 const ANCHOR = new Date("2026-04-05T10:00:00.000Z").getTime();
 const hour = 3600_000;
 const day = hour * 24;
-
-const recentDelegations = Array.from({ length: 6 }, (_, i) => {
-  const seed = ((i * 7919 + 31) % 997) / 997;
-  const statuses = ["active", "pending", "undelegating"] as const;
-  return {
-    delegator: `0x${((0xa1b2c3d4 + i * 0x1111111) >>> 0).toString(16).padStart(8, "0")}e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0`,
-    operator: `0x${((0xf9e8d7c6 - i * 0x2222222) >>> 0).toString(16).padStart(8, "0")}1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d`,
-    amount: Math.floor(seed * 50000) + 5000,
-    date: new Date(ANCHOR - i * day * 2 - seed * day).toISOString(),
-    status: statuses[i % 3],
-  };
-});
-
-const rewardClaims = Array.from({ length: 5 }, (_, i) => {
-  const seed = ((i * 7919 + 31) % 997) / 997;
-  return {
-    claimer: `0x${((0xc3d4e5f6 + i * 0x3333333) >>> 0).toString(16).padStart(8, "0")}7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d`,
-    amount: Math.floor(seed * 2000) + 200,
-    epoch: 1420 + i,
-    date: new Date(ANCHOR - i * day * 3 - seed * day * 2).toISOString(),
-    txHash: `0x${((0xabcdef01 + i * 0x4444444) >>> 0).toString(16).padStart(8, "0")}23456789abcdef0123456789abcdef01234567`,
-  };
-});
 
 export default function StakingPage() {
   const [leaderboardPage, setLeaderboardPage] = useState(1);
@@ -108,18 +85,17 @@ export default function StakingPage() {
   const yearlyReward = stakeAmount * APY;
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <PageTitle title="Staking" />
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">
-            Hardware Staking
-          </h1>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Staking overview, validators, and delegation
-          </p>
+        <h1 className="text-xl font-semibold tracking-tight">Hardware Staking</h1>
+        <div className="hidden sm:flex items-center gap-2 text-[11px] text-muted-foreground">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-60 animate-ping" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#22C55E]" />
+          </span>
+          <span>Cycle 132 · 67% complete</span>
         </div>
-        
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -308,8 +284,7 @@ export default function StakingPage() {
       {/* Reward Calculator */}
       <div className="rounded-lg bg-card border border-border p-5">
         <div className="flex items-center gap-2 mb-4">
-          <Calculator className="h-4 w-4 text-primary" />
-          <h2 className="text-sm font-medium">Reward Calculator</h2>
+                    <h2 className="text-sm font-medium">Reward Calculator</h2>
           <span className="text-[11px] text-muted-foreground ml-auto">
             Current APY: 10.2%
           </span>
@@ -396,100 +371,11 @@ export default function StakingPage() {
         ))}
       </div>
 
-      {/* Recent Delegations */}
-      <div className="hidden md:block rounded-lg bg-card border border-border overflow-hidden">
-        <div className="px-5 py-3 border-b border-border">
-          <h2 className="text-sm font-medium">Recent Delegations</h2>
-        </div>
-        <div className="grid grid-cols-[1fr_1fr_100px_120px_100px] gap-3 px-5 py-2.5 border-b border-border text-[11px] text-muted-foreground uppercase tracking-wider">
-          <span>Delegator</span>
-          <span>Operator</span>
-          <span className="text-right">Amount</span>
-          <span>Date</span>
-          <span>Status</span>
-        </div>
-        {recentDelegations.map((d, i) => (
-          <div
-            key={i}
-            className="row-hover grid grid-cols-[1fr_1fr_100px_120px_100px] gap-3 items-center px-5 py-2.5 border-b border-border last:border-0 text-sm"
-          >
-            <HashLink hash={d.delegator} type="address" />
-            <HashLink hash={d.operator} type="address" />
-            <span className="text-right font-mono-data">
-              {d.amount.toLocaleString()}
-            </span>
-            <TimeAgo timestamp={d.date} />
-            <StatusBadge status={d.status} />
-          </div>
-        ))}
-      </div>
-      <div className="md:hidden space-y-3">
-        <h2 className="text-sm font-medium">Recent Delegations</h2>
-        {recentDelegations.map((d, i) => (
-          <MobileCard
-            key={i}
-            rows={[
-              { label: "Delegator", value: <span className="font-mono-data text-xs">{d.delegator.slice(0, 10)}...{d.delegator.slice(-6)}</span> },
-              { label: "Operator", value: <span className="font-mono-data text-xs">{d.operator.slice(0, 10)}...{d.operator.slice(-6)}</span> },
-              { label: "Amount", value: <span className="font-mono-data">{d.amount.toLocaleString()}</span> },
-              { label: "Date", value: <TimeAgo timestamp={d.date} /> },
-              { label: "Status", value: <StatusBadge status={d.status} /> },
-            ]}
-          />
-        ))}
-      </div>
-
-      {/* Recent Reward Claims */}
-      <div className="hidden md:block rounded-lg bg-card border border-border overflow-hidden">
-        <div className="px-5 py-3 border-b border-border">
-          <h2 className="text-sm font-medium">Recent Reward Claims</h2>
-        </div>
-        <div className="grid grid-cols-[1fr_100px_70px_120px_1fr] gap-3 px-5 py-2.5 border-b border-border text-[11px] text-muted-foreground uppercase tracking-wider">
-          <span>Claimer</span>
-          <span className="text-right">Amount</span>
-          <span>Epoch</span>
-          <span>Date</span>
-          <span>Tx Hash</span>
-        </div>
-        {rewardClaims.map((r, i) => (
-          <div
-            key={i}
-            className="row-hover grid grid-cols-[1fr_100px_70px_120px_1fr] gap-3 items-center px-5 py-2.5 border-b border-border last:border-0 text-sm"
-          >
-            <HashLink hash={r.claimer} type="address" />
-            <span className="text-right font-mono-data">
-              {r.amount.toLocaleString()} NECTA
-            </span>
-            <span className="font-mono-data text-muted-foreground">
-              {r.epoch}
-            </span>
-            <TimeAgo timestamp={r.date} />
-            <HashLink hash={r.txHash} type="tx" />
-          </div>
-        ))}
-      </div>
-      <div className="md:hidden space-y-3">
-        <h2 className="text-sm font-medium">Recent Reward Claims</h2>
-        {rewardClaims.map((r, i) => (
-          <MobileCard
-            key={i}
-            rows={[
-              { label: "Claimer", value: <span className="font-mono-data text-xs">{r.claimer.slice(0, 10)}...{r.claimer.slice(-6)}</span> },
-              { label: "Amount", value: <span className="font-mono-data">{r.amount.toLocaleString()} NECTA</span> },
-              { label: "Epoch", value: <span className="font-mono-data">{r.epoch}</span> },
-              { label: "Date", value: <TimeAgo timestamp={r.date} /> },
-              { label: "Tx Hash", value: <span className="font-mono-data text-xs">{r.txHash.slice(0, 10)}...{r.txHash.slice(-6)}</span> },
-            ]}
-          />
-        ))}
-      </div>
-
       {/* Operator Leaderboard */}
       <div className="space-y-4">
         <div className="hidden md:block rounded-lg bg-card border border-border overflow-hidden">
           <div className="px-5 py-3 border-b border-border flex items-center gap-2">
-            <Trophy className="h-4 w-4 text-primary" />
-            <h2 className="text-sm font-medium">Operator Leaderboard</h2>
+                        <h2 className="text-sm font-medium">Operator Leaderboard</h2>
           </div>
           <div className="grid grid-cols-[40px_70px_1fr_100px_70px_120px_80px_80px] gap-3 px-5 py-2.5 border-b border-border text-[11px] text-muted-foreground uppercase tracking-wider">
             <span>#</span>
@@ -509,7 +395,7 @@ export default function StakingPage() {
                 className="row-hover grid grid-cols-[40px_70px_1fr_100px_70px_120px_80px_80px] gap-3 items-center px-5 py-2.5 border-b border-border last:border-0 text-sm"
               >
                 <span
-                  className={`font-mono-data font-bold ${rank < 3 ? medals[rank] : "text-muted-foreground"}`}
+                  className={`font-mono-data font-semibold ${rank < 3 ? medals[rank] : "text-muted-foreground"}`}
                 >
                   {rank + 1}
                 </span>
@@ -525,13 +411,13 @@ export default function StakingPage() {
                 </span>
                 <div className="flex items-center gap-2">
                   <span
-                    className={`font-mono-data text-xs ${op.uptimePercent > 95 ? "text-[#22C55E]" : op.uptimePercent > 80 ? "text-[#F2994A]" : "text-[#EB5757]"}`}
+                    className={`font-mono-data text-xs ${op.uptimePercent > 95 ? "text-[#22C55E]" : op.uptimePercent > 80 ? "text-[#EB5757]" : "text-[#EB5757]"}`}
                   >
                     {op.uptimePercent.toFixed(1)}%
                   </span>
                 </div>
                 <span
-                  className={`font-mono-data font-medium ${op.reputation > 80 ? "text-[#22C55E]" : op.reputation > 50 ? "text-[#F2994A]" : "text-[#EB5757]"}`}
+                  className={`font-mono-data font-medium ${op.reputation > 80 ? "text-[#22C55E]" : op.reputation > 50 ? "text-[#EB5757]" : "text-[#EB5757]"}`}
                 >
                   {op.reputation}/100
                 </span>
@@ -542,8 +428,7 @@ export default function StakingPage() {
         </div>
         <div className="md:hidden">
           <div className="px-1 py-2 flex items-center gap-2">
-            <Trophy className="h-4 w-4 text-primary" />
-            <h2 className="text-sm font-medium">Operator Leaderboard</h2>
+                        <h2 className="text-sm font-medium">Operator Leaderboard</h2>
           </div>
           <div className="space-y-3">
             {paginatedLeaderboard.map((op, i) => {
@@ -552,10 +437,10 @@ export default function StakingPage() {
                 <MobileCard
                   key={op.operatorId}
                   rows={[
-                    { label: "Rank / ID", value: <span className="font-mono-data"><span className={`font-bold ${rank < 3 ? medals[rank] : "text-muted-foreground"}`}>#{rank + 1}</span> {op.operatorId}</span> },
+                    { label: "Rank / ID", value: <span className="font-mono-data"><span className={`font-semibold ${rank < 3 ? medals[rank] : "text-muted-foreground"}`}>#{rank + 1}</span> {op.operatorId}</span> },
                     { label: "Stake", value: <span className="font-mono-data">{parseInt(op.stake).toLocaleString()}</span> },
-                    { label: "Uptime", value: <span className={`font-mono-data ${op.uptimePercent > 95 ? "text-[#22C55E]" : op.uptimePercent > 80 ? "text-[#F2994A]" : "text-[#EB5757]"}`}>{op.uptimePercent.toFixed(1)}%</span> },
-                    { label: "Reputation", value: <span className={`font-mono-data font-medium ${op.reputation > 80 ? "text-[#22C55E]" : op.reputation > 50 ? "text-[#F2994A]" : "text-[#EB5757]"}`}>{op.reputation}/100</span> },
+                    { label: "Uptime", value: <span className={`font-mono-data ${op.uptimePercent > 95 ? "text-[#22C55E]" : op.uptimePercent > 80 ? "text-[#EB5757]" : "text-[#EB5757]"}`}>{op.uptimePercent.toFixed(1)}%</span> },
+                    { label: "Reputation", value: <span className={`font-mono-data font-medium ${op.reputation > 80 ? "text-[#22C55E]" : op.reputation > 50 ? "text-[#EB5757]" : "text-[#EB5757]"}`}>{op.reputation}/100</span> },
                   ]}
                 />
               );
@@ -571,16 +456,6 @@ export default function StakingPage() {
         />
       </div>
 
-      {/* Compare Operators CTA */}
-      <div className="rounded-lg bg-card border border-border p-5 flex items-center justify-between">
-        <div>
-          <h2 className="text-sm font-medium">Compare Operators</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Compare performance, reputation, and rewards side by side</p>
-        </div>
-        <Link href="/compare" className="n-btn n-btn--primary n-btn--sm inline-flex items-center">
-          Compare
-        </Link>
-      </div>
     </div>
   );
 }

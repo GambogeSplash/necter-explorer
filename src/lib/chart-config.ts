@@ -15,9 +15,9 @@ export const CHART_COLORS = {
   gold: "#FFC933",
   green: "#22C55E",
   blue: "#6E9FFF",
-  orange: "#F2994A",
+  orange: "#EB5757",
   red: "#EB5757",
-  purple: "#9985FF",
+  purple: "#6E9FFF",
 };
 
 export const CHART_GRID = {

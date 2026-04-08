@@ -39,7 +39,7 @@ export default function ProposalDetailPage({
 
   if (!proposal) {
     return (
-      <div className="px-2.5 py-2 space-y-4">
+      <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
         <Link
           href="/governance"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -113,7 +113,7 @@ export default function ProposalDetailPage({
   );
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       {/* Back link */}
       <Link
         href="/governance"

@@ -185,24 +185,11 @@ export default function GasPage() {
   };
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <PageTitle title="Gas Station" />
       {/* Header */}
       <div className="flex items-start justify-between">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <div className="rounded-lg bg-secondary p-2">
-              <Fuel className="h-5 w-5 text-muted-foreground" />
-            </div>
-            <div>
-              <h1 className="text-xl font-semibold tracking-tight">
-                Gas Station
-              </h1>
-              <p className="text-xs text-muted-foreground mt-0.5">
-              </p>
-            </div>
-          </div>
-        </div>
+        <h1 className="text-xl font-semibold tracking-tight">Gas Station</h1>
       </div>
 
       {/* Current Gas Prices */}
@@ -314,8 +301,7 @@ export default function GasPage() {
       {/* Gas Calculator */}
       <div className="rounded-lg bg-card border border-border p-5">
         <div className="flex items-center gap-2 mb-4">
-          <Calculator className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-medium">Gas Calculator</h2>
+                    <h2 className="text-sm font-medium">Gas Calculator</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Inputs */}
@@ -512,10 +498,9 @@ export default function GasPage() {
         {/* Gas Forecast */}
         <div className="rounded-lg bg-card border border-border overflow-hidden">
           <div className="px-5 py-3 border-b border-border flex items-center gap-2">
-            <Clock className="h-4 w-4 text-muted-foreground" />
-            <h2 className="text-sm font-medium">Gas Forecast</h2>
+                        <h2 className="text-sm font-medium">Gas Forecast</h2>
           </div>
-          <div className="px-5 py-2 space-y-4">
+          <div className="max-w-[1480px] mx-auto px-5 py-2 space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">
                 Next 10 minutes
@@ -544,10 +529,9 @@ export default function GasPage() {
         {/* Gas Tips */}
         <div className="rounded-lg bg-card border border-border overflow-hidden">
           <div className="px-5 py-3 border-b border-border flex items-center gap-2">
-            <Lightbulb className="h-4 w-4 text-[#FFC933]" />
-            <h2 className="text-sm font-medium">Gas Tips</h2>
+                        <h2 className="text-sm font-medium">Gas Tips</h2>
           </div>
-          <div className="px-5 py-4 space-y-3">
+          <div className="max-w-[1480px] mx-auto px-5 py-4 space-y-3">
             <div className="flex items-start gap-3 text-sm">
               <span className="text-[#FFC933] shrink-0 mt-0.5">
                 <Fuel className="h-3.5 w-3.5" />
@@ -591,8 +575,7 @@ export default function GasPage() {
       {/* Gas Alerts */}
       <div className="rounded-lg bg-card border border-border p-5">
         <div className="flex items-center gap-2 mb-4">
-          <Bell className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-medium">Gas Alerts</h2>
+                    <h2 className="text-sm font-medium">Gas Alerts</h2>
         </div>
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">

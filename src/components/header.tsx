@@ -106,7 +106,7 @@ export function Header() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
         {/* Single row: logo | nav | search | controls */}
-        <div className="px-2.5 flex items-center h-[48px] gap-4">
+        <div className="max-w-[1480px] mx-auto px-2.5 flex items-center h-[48px] gap-4">
 
           {/* Logo */}
           <Link href="/" className="shrink-0 flex items-center gap-2">
@@ -175,7 +175,7 @@ export function Header() {
           {/* Search */}
           <button
             onClick={() => setSearchOpen(true)}
-            className="flex-1 max-w-[380px] ml-auto flex items-center gap-2 h-[32px] px-3 rounded-full bg-secondary text-muted-foreground hover:bg-secondary transition-colors text-[12px]"
+            className="flex-1 max-w-[380px] ml-auto flex items-center gap-2 h-[32px] px-3 rounded-md bg-secondary text-muted-foreground hover:bg-secondary transition-colors text-[12px]"
           >
             <Search className="h-3.5 w-3.5 opacity-40" />
             <span className="truncate hidden sm:inline">Search</span>
@@ -187,7 +187,7 @@ export function Header() {
             <DevModeToggle />
             {wallet?.connected ? (
               <button onClick={() => { disconnectWallet(); showToast("Disconnected", "info"); }}
-                className="hidden md:flex items-center gap-1.5 h-[32px] px-3 rounded-full bg-secondary text-[11px] hover:bg-secondary transition-colors">
+                className="hidden md:flex items-center gap-1.5 h-[32px] px-3 rounded-md bg-secondary text-[11px] hover:bg-secondary transition-colors">
                 <img src={getAddressAvatar(wallet.address)} alt="" className="h-4 w-4 rounded-sm" />
                 <span className="font-mono-data">{wallet.address.slice(0, 6)}..{wallet.address.slice(-4)}</span>
               </button>
@@ -197,7 +197,7 @@ export function Header() {
                 Connect
               </button>
             )}
-            <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden h-8 w-8 rounded-lg bg-secondary flex items-center justify-center">
+            <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden h-8 w-8 rounded-md bg-secondary flex items-center justify-center">
               {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
           </div>

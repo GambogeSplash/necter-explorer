@@ -6,9 +6,9 @@ const statusStyles: Record<string, string> = {
   executed: "bg-[rgba(34,197,94,0.12)] text-[#22C55E]",
   confirmed: "bg-[rgba(34,197,94,0.12)] text-[#22C55E]",
   // Warning states
-  pending: "bg-[rgba(242,153,74,0.12)] text-[#F2994A]",
-  posted: "bg-[rgba(242,153,74,0.12)] text-[#F2994A]",
-  bidding: "bg-[rgba(242,153,74,0.12)] text-[#F2994A]",
+  pending: "bg-[rgba(242,153,74,0.12)] text-[#EB5757]",
+  posted: "bg-[rgba(242,153,74,0.12)] text-[#EB5757]",
+  bidding: "bg-[rgba(242,153,74,0.12)] text-[#EB5757]",
   // Info states
   assigned: "bg-[rgba(110,159,255,0.12)] text-[#6E9FFF]",
   proving: "bg-[rgba(110,159,255,0.12)] text-[#6E9FFF]",
@@ -21,10 +21,10 @@ const statusStyles: Record<string, string> = {
   inactive: "bg-secondary text-muted-foreground",
   // Transaction types
   transfer: "bg-[rgba(255,201,51,0.10)] text-[#FFC933]",
-  "contract call": "bg-[#9985FF]/10 text-[#9985FF]",
-  "job post": "bg-[rgba(242,153,74,0.12)] text-[#F2994A]",
+  "contract call": "bg-[#6E9FFF]/10 text-[#6E9FFF]",
+  "job post": "bg-[rgba(242,153,74,0.12)] text-[#EB5757]",
   attestation: "bg-[rgba(34,197,94,0.12)] text-[#22C55E]",
-  stake: "bg-[#9985FF]/10 text-[#9985FF]",
+  stake: "bg-[#6E9FFF]/10 text-[#6E9FFF]",
   governance: "bg-[#FFC933]/10 text-[#FFC933]",
 };
 

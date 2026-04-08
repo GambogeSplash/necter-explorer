@@ -14,7 +14,7 @@ const tokenLogos: Record<string, string> = {
 
 // Generate a deterministic colored circle SVG for unknown tokens
 function generateTokenSvg(symbol: string): string {
-  const colors = ["#FFC933", "#22C55E", "#6E9FFF", "#F2994A", "#9985FF", "#EB5757"];
+  const colors = ["#FFC933", "#22C55E", "#6E9FFF", "#EB5757", "#6E9FFF", "#EB5757"];
   const seed = symbol.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
   const color = colors[seed % colors.length];
   const letter = symbol.charAt(0).toUpperCase();

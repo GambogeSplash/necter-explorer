@@ -1,7 +1,7 @@
 "use client";
 
-import { Vote, ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { HashLink } from "@/components/hash-link";
+import { Vote, ArrowUpRight, ArrowDownRight, Users, Wallet, CheckCircle } from "lucide-react";
+import { StatCard } from "@/components/stat-card";
 import { StatusBadge } from "@/components/status-badge";
 import { TimeAgo } from "@/components/time-ago";
 import { DateRangePicker } from "@/components/date-range-picker";
@@ -30,27 +30,56 @@ export default function GovernancePage() {
   const [flowRange, setFlowRange] = useState("30d");
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <PageTitle title="Governance" />
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">
-            Governance & Treasury
-          </h1>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            DAO proposals, voting, and treasury
-          </p>
+        <h1 className="text-xl font-semibold tracking-tight">Governance &amp; Treasury</h1>
+        <div className="hidden sm:flex items-center gap-2 text-[11px] text-muted-foreground">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-60 animate-ping" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#22C55E]" />
+          </span>
+          <span>{proposals.filter((p) => p.status === "active").length} active proposals</span>
         </div>
-        
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <StatCard
+          title="Active Proposals"
+          value={proposals.filter((p) => p.status === "active").length.toString()}
+          change="+2"
+          trend="up"
+          icon={Vote}
+        />
+        <StatCard
+          title="Total Voters"
+          value="14,827"
+          change="+248"
+          trend="up"
+          icon={Users}
+        />
+        <StatCard
+          title="Treasury"
+          value={treasury.balance}
+          change="+4.2%"
+          trend="up"
+          icon={Wallet}
+        />
+        <StatCard
+          title="Quorum Reached"
+          value="68%"
+          change="+12%"
+          trend="up"
+          icon={CheckCircle}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Proposals */}
         <div className="lg:col-span-2 space-y-3">
           <div className="flex items-center justify-between mb-1">
-            <h2 className="text-sm font-medium text-muted-foreground">
-              Proposals
-            </h2>
+            <h2 className="text-sm font-medium">Proposals</h2>
             <Link
               href="/governance/delegates"
               className="inline-flex items-center gap-1 text-xs text-primary hover:underline underline-offset-2 transition-colors"
@@ -153,23 +182,10 @@ export default function GovernancePage() {
         </div>
       </div>
 
-      {/* Create Proposal CTA */}
-      <div className="rounded-lg bg-card border border-border p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <div>
-          <h2 className="text-sm font-medium">Create Proposal</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Submit a new governance proposal for community vote</p>
-        </div>
-        <button className="n-btn n-btn--primary n-btn--md shrink-0">
-          Draft Proposal
-        </button>
-      </div>
-
       {/* Treasury Flow Chart */}
       <div className="rounded-lg bg-card border border-border p-5">
         <div className="flex items-center justify-between mb-4">
-          <p className="text-xs text-muted-foreground">
-            Treasury Flow (30 Days)
-          </p>
+          <h2 className="text-sm font-medium">Treasury Flow</h2>
           <DateRangePicker value={flowRange} onChange={setFlowRange} />
         </div>
         <div className="chart-reveal">

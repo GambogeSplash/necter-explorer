@@ -2,7 +2,7 @@
 
 import { use, useState } from "react";
 import Link from "next/link";
-import { ShieldCheck, FileCode2, Activity, Users } from "lucide-react";
+import { ShieldCheck, Activity, Users } from "lucide-react";
 import { HashLink } from "@/components/hash-link";
 import { StatusBadge } from "@/components/status-badge";
 import { TimeAgo } from "@/components/time-ago";
@@ -260,11 +260,11 @@ const eventNameColors: Record<string, string> = {
   DeviceDeactivated: "bg-[#EB5757]/10 text-[#EB5757]",
   AttestationSubmitted: "bg-[#6E9FFF]/10 text-[#6E9FFF]",
   JobPosted: "bg-[#FFC933]/10 text-[#FFC933]",
-  JobAssigned: "bg-[#9985FF]/10 text-[#9985FF]",
+  JobAssigned: "bg-[#6E9FFF]/10 text-[#6E9FFF]",
   JobCompleted: "bg-[#22C55E]/10 text-[#22C55E]",
-  JobDisputed: "bg-[#F2994A]/10 text-[#F2994A]",
+  JobDisputed: "bg-[#EB5757]/10 text-[#EB5757]",
   StakeDeposited: "bg-[#6E9FFF]/10 text-[#6E9FFF]",
-  StakeWithdrawn: "bg-[#F2994A]/10 text-[#F2994A]",
+  StakeWithdrawn: "bg-[#EB5757]/10 text-[#EB5757]",
   SlashApplied: "bg-[#EB5757]/10 text-[#EB5757]",
   RewardClaimed: "bg-[#FFC933]/10 text-[#FFC933]",
 };
@@ -335,16 +335,13 @@ export default function ContractDetailPage({
   };
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
 
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="rounded-lg bg-secondary p-2">
-          <FileCode2 className="h-5 w-5 text-primary" />
-        </div>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-lg font-semibold tracking-tight">
+            <h1 className="text-xl font-semibold tracking-tight">
               {contract.name}
             </h1>
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-medium bg-[#22C55E]/10 text-[#22C55E]">
@@ -410,7 +407,7 @@ export default function ContractDetailPage({
             <h2 className="text-sm font-medium mb-2">Proxy Detection</h2>
             {contract.isProxy ? (
               <div className="flex items-center gap-2 text-sm">
-                <span className="text-[#F2994A]">This contract is a proxy</span>
+                <span className="text-[#EB5757]">This contract is a proxy</span>
                 <span className="text-muted-foreground">&rarr; Implementation:</span>
                 <HashLink hash={(contract as { implementation?: string }).implementation ?? ""} type="address" />
               </div>

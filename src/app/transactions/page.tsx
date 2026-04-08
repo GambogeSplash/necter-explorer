@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ArrowLeftRight, Fuel, Clock, AlertTriangle } from "lucide-react";
 import { HashLink } from "@/components/hash-link";
 import { MobileCard } from "@/components/mobile-card";
+import { StatCard } from "@/components/stat-card";
 import { TimeAgo } from "@/components/time-ago";
 import { StatusBadge } from "@/components/status-badge";
 import { Pagination } from "@/components/pagination";
@@ -49,6 +51,21 @@ export default function TransactionsPage() {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDir, setSortDir] = useState<SortDir | null>(null);
   const [filterValues, setFilterValues] = useState<Record<string, string>>({});
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    const i = setInterval(() => setTick((p) => p + 1), 5000);
+    return () => clearInterval(i);
+  }, []);
+
+  // Derived stats
+  const total24h = transactionsExtended.length * 18 + tick;
+  const avgFee = (
+    transactionsExtended.reduce((s, tx) => s + parseFloat(tx.fee), 0) /
+    transactionsExtended.length
+  ).toFixed(5);
+  const pendingCount = transactionsExtended.filter((tx) => tx.status === "pending").length;
+  const failedCount = transactionsExtended.filter((tx) => tx.status === "failed").length;
+  const failedRate = ((failedCount / transactionsExtended.length) * 100).toFixed(2);
 
   function handleSort(key: string) {
     const k = key as SortKey;
@@ -109,14 +126,50 @@ export default function TransactionsPage() {
   const paginated = processed.slice((page - 1) * pageSize, page * pageSize);
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
+      <PageTitle title="Transactions" />
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-xl font-semibold tracking-tight">Transactions</h1>
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-secondary text-muted-foreground">
-            {processed.length.toLocaleString()}
+        <h1 className="text-xl font-semibold tracking-tight">Transactions</h1>
+        <div className="hidden sm:flex items-center gap-2 text-[11px] text-muted-foreground">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-60 animate-ping" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#22C55E]" />
           </span>
+          <span className="font-mono-data tabular-nums">{total24h.toLocaleString()}</span>
+          <span>tx in 24h</span>
         </div>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <StatCard
+          title="Total 24h"
+          value={total24h.toLocaleString()}
+          change="+12.4%"
+          trend="up"
+          icon={ArrowLeftRight}
+        />
+        <StatCard
+          title="Avg Fee"
+          value={`${avgFee}`}
+          change="-2.1%"
+          trend="up"
+          icon={Fuel}
+        />
+        <StatCard
+          title="Pending"
+          value={pendingCount.toString()}
+          change="+3"
+          trend="down"
+          icon={Clock}
+        />
+        <StatCard
+          title="Failed Rate"
+          value={`${failedRate}%`}
+          change="-0.4%"
+          trend="up"
+          icon={AlertTriangle}
+        />
       </div>
 
       <FilterBar
@@ -125,6 +178,19 @@ export default function TransactionsPage() {
         onChange={handleFilterChange}
         onClear={handleFilterClear}
       />
+
+      {/* Empty state */}
+      {paginated.length === 0 && (
+        <div className="rounded-lg border border-border bg-card px-5 py-12 text-center">
+          <p className="text-sm text-muted-foreground">No transactions match your filters.</p>
+          <button
+            onClick={handleFilterClear}
+            className="mt-2 text-[11px] text-primary hover:underline"
+          >
+            Clear filters
+          </button>
+        </div>
+      )}
 
       {/* Mobile cards */}
       <div className="md:hidden space-y-3">

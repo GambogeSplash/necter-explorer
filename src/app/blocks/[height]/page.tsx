@@ -2,7 +2,7 @@
 
 import { use, useState } from "react";
 import Link from "next/link";
-import { Box } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import {
   PieChart,
   Pie,
@@ -16,6 +16,7 @@ import { TimeAgo } from "@/components/time-ago";
 import { StatusBadge } from "@/components/status-badge";
 import { ShareButton } from "@/components/share-button";
 import { MobileCard } from "@/components/mobile-card";
+import { PageTitle } from "@/components/page-title";
 import { blocks, blocksExtended, transactions, eventLogs } from "@/lib/mock-data";
 
 const CHART_TOOLTIP = {
@@ -50,7 +51,7 @@ export default function BlockDetailPage({ params }: { params: Promise<{ height: 
       <div className="px-2.5 py-4">
         <div className="flex flex-col items-center justify-center min-h-[40vh] text-center">
           <img src="/brand/3d/bee-dark.png" alt="" className="h-20 w-auto opacity-50 mb-4" />
-          <h1 className="text-lg font-semibold mb-1">Block Not Found</h1>
+          <h1 className="text-xl font-semibold mb-1">Block Not Found</h1>
           <p className="text-sm text-muted-foreground mb-4">Block #{height} does not exist.</p>
           <Link href="/blocks" className="text-sm text-primary hover:underline">View all blocks</Link>
         </div>
@@ -72,10 +73,10 @@ export default function BlockDetailPage({ params }: { params: Promise<{ height: 
   const gasColors: Record<string, string> = {
     transfer: "#FFC933",
     "contract call": "#6E9FFF",
-    "job post": "#F2994A",
+    "job post": "#EB5757",
     attestation: "#22C55E",
-    stake: "#9985FF",
-    governance: "#EB5757",
+    stake: "#9b8b5b",
+    governance: "#777470",
   };
 
   // Block rewards breakdown
@@ -92,16 +93,19 @@ export default function BlockDetailPage({ params }: { params: Promise<{ height: 
     { label: "Parent Hash", value: <HashLink hash={block.parentHash} type="block" /> },
     { label: "Transactions", value: <span className="font-mono-data">{block.txCount}</span> },
     { label: "Gas Used / Limit", value: <span className="font-mono-data">{(block.gasUsed / 1_000_000).toFixed(2)}M / {block.gasLimit / 1_000_000}M ({((block.gasUsed / block.gasLimit) * 100).toFixed(1)}%)</span> },
-    { label: "ZK Proof Anchor", value: <span className="font-mono-data text-[#9985FF]">{block.zkProofAnchor}</span> },
+    { label: "ZK Proof Anchor", value: <span className="font-mono-data text-[#6E9FFF]">{block.zkProofAnchor}</span> },
     { label: "L1 Settlement", value: <span className="inline-flex px-1.5 py-0.5 rounded-[3px] text-[11px] font-medium bg-[#22C55E]/10 text-[#22C55E]">Settled</span> },
   ];
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
+      <PageTitle title={`Block #${block.height}`} />
+      <Link href="/blocks" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 w-fit">
+        <ArrowLeft className="h-3.5 w-3.5" /> Back to Blocks
+      </Link>
 
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold tracking-tight flex items-center gap-2">
-          <Box className="h-5 w-5 text-primary" />
           Block #{block.height.toLocaleString()}
           <ShareButton />
         </h1>
@@ -287,7 +291,7 @@ export default function BlockDetailPage({ params }: { params: Promise<{ height: 
                 key={i}
                 rows={[
                   { label: "Address", value: <HashLink hash={sc.address} type="address" /> },
-                  { label: "Slot", value: <span className="font-mono-data text-xs text-[#9985FF]">{sc.slot}</span> },
+                  { label: "Slot", value: <span className="font-mono-data text-xs text-[#6E9FFF]">{sc.slot}</span> },
                   { label: "New Value", value: <span className="font-mono-data text-[11px] truncate">{sc.next.slice(0, 18)}...</span> },
                 ]}
               />
@@ -301,7 +305,7 @@ export default function BlockDetailPage({ params }: { params: Promise<{ height: 
             {stateChanges.map((sc, i) => (
               <div key={i} className="row-hover grid grid-cols-[1fr_60px_1fr_1fr] gap-3 items-center px-5 py-2.5 border-b border-border last:border-0">
                 <HashLink hash={sc.address} type="address" />
-                <span className="font-mono-data text-xs text-[#9985FF]">{sc.slot}</span>
+                <span className="font-mono-data text-xs text-[#6E9FFF]">{sc.slot}</span>
                 <span className="font-mono-data text-[11px] text-muted-foreground truncate">{sc.prev.slice(0, 22)}...</span>
                 <span className="font-mono-data text-[11px] text-foreground truncate">{sc.next.slice(0, 22)}...</span>
               </div>

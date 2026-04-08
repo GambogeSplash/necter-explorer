@@ -2,7 +2,7 @@
 
 import { use, useState } from "react";
 import Link from "next/link";
-import { Lock, CheckCircle2, Clock, Copy, Check } from "lucide-react";
+import { CheckCircle2, Clock, Copy, Check } from "lucide-react";
 import { HashLink } from "@/components/hash-link";
 import { StatusBadge } from "@/components/status-badge";
 import { TimeAgo } from "@/components/time-ago";
@@ -20,12 +20,12 @@ const ts = (offset: number) => new Date(ANCHOR - offset).toISOString();
 const policyTypeColors: Record<string, string> = {
   "data-retention": "bg-[#6E9FFF]/10 text-[#6E9FFF]",
   "access-control": "bg-[#FFC933]/10 text-[#FFC933]",
-  privacy: "bg-[#9985FF]/10 text-[#9985FF]",
-  "geo-restriction": "bg-[#F2994A]/10 text-[#F2994A]",
+  privacy: "bg-[#6E9FFF]/10 text-[#6E9FFF]",
+  "geo-restriction": "bg-[#EB5757]/10 text-[#EB5757]",
 };
 
 const proofTypeColors: Record<string, string> = {
-  "zk-snark": "bg-[#9985FF]/10 text-[#9985FF]",
+  "zk-snark": "bg-[#6E9FFF]/10 text-[#6E9FFF]",
   "zk-stark": "bg-[#6E9FFF]/10 text-[#6E9FFF]",
   merkle: "bg-[#FFC933]/10 text-[#FFC933]",
 };
@@ -113,14 +113,11 @@ export default function PolicyDetailPage({
   ];
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="rounded-lg bg-secondary p-2">
-          <Lock className="h-5 w-5 text-primary" />
-        </div>
         <div className="flex items-center gap-2">
-          <h1 className="text-lg font-semibold tracking-tight font-mono-data">
+          <h1 className="text-xl font-semibold tracking-tight font-mono-data">
             {policyId}
           </h1>
           <span
@@ -377,7 +374,7 @@ export default function PolicyDetailPage({
                     {event.status === "done" ? (
                       <CheckCircle2 className="h-4 w-4 text-[#22C55E]" />
                     ) : (
-                      <Clock className="h-4 w-4 text-[#F2994A]" />
+                      <Clock className="h-4 w-4 text-[#EB5757]" />
                     )}
                   </div>
                   {i < timelineEvents.length - 1 && (
@@ -389,7 +386,7 @@ export default function PolicyDetailPage({
                     className={`text-sm font-medium ${
                       event.status === "done"
                         ? "text-foreground"
-                        : "text-[#F2994A]"
+                        : "text-[#EB5757]"
                     }`}
                   >
                     {event.label}

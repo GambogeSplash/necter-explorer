@@ -152,11 +152,11 @@ const eventNameColors: Record<string, string> = {
   DeviceDeactivated: "bg-[#EB5757]/10 text-[#EB5757]",
   AttestationSubmitted: "bg-[#6E9FFF]/10 text-[#6E9FFF]",
   JobPosted: "bg-[#FFC933]/10 text-[#FFC933]",
-  JobAssigned: "bg-[#9985FF]/10 text-[#9985FF]",
+  JobAssigned: "bg-[#6E9FFF]/10 text-[#6E9FFF]",
   JobCompleted: "bg-[#22C55E]/10 text-[#22C55E]",
-  JobDisputed: "bg-[#F2994A]/10 text-[#F2994A]",
+  JobDisputed: "bg-[#EB5757]/10 text-[#EB5757]",
   StakeDeposited: "bg-[#6E9FFF]/10 text-[#6E9FFF]",
-  StakeWithdrawn: "bg-[#F2994A]/10 text-[#F2994A]",
+  StakeWithdrawn: "bg-[#EB5757]/10 text-[#EB5757]",
   SlashApplied: "bg-[#EB5757]/10 text-[#EB5757]",
   RewardClaimed: "bg-[#FFC933]/10 text-[#FFC933]",
 };
@@ -220,18 +220,11 @@ export default function ContractsPage() {
   const recentEvents = contractEvents.slice(0, 10);
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <PageTitle title="Contracts" />
       {/* Page header */}
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">
-            Contract Verification
-          </h1>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Verify and explore smart contracts deployed on Necter
-          </p>
-        </div>
+        <h1 className="text-xl font-semibold tracking-tight">Contract Verification</h1>
       </div>
 
       {/* Stat cards */}

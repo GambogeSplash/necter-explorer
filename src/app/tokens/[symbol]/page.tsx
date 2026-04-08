@@ -92,7 +92,7 @@ export default function TokenDetailPage({ params }: { params: Promise<{ symbol: 
 
   if (!token) {
     return (
-      <div className="px-2.5 py-2 space-y-4">
+      <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
         <div className="flex flex-col items-center justify-center py-24 text-center space-y-4">
           <img src="/brand/3d/logo-3d.png" alt="" className="h-20 w-20 opacity-40" />
           <h2 className="text-lg font-semibold">Token not found</h2>
@@ -114,7 +114,7 @@ export default function TokenDetailPage({ params }: { params: Promise<{ symbol: 
   const transfers = mockTransfers(token.symbol);
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       {/* Breadcrumb */}
 
       {/* Header */}
@@ -205,8 +205,7 @@ export default function TokenDetailPage({ params }: { params: Promise<{ symbol: 
       {/* Token Info */}
       <div className="rounded-lg bg-card border border-border overflow-hidden">
         <div className="px-5 py-3 border-b border-border flex items-center gap-2">
-          <Info className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-medium">Token Info</h2>
+                    <h2 className="text-sm font-medium">Token Info</h2>
         </div>
         {[
           ["Name", token.name],

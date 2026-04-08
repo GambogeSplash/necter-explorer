@@ -2,10 +2,11 @@
 
 import { use, useState } from "react";
 import Link from "next/link";
-import { CheckCircle, XCircle, Clock } from "lucide-react";
+import { CheckCircle, XCircle, Clock, ArrowLeft } from "lucide-react";
 import { HashLink } from "@/components/hash-link";
 import { TimeAgo } from "@/components/time-ago";
 import { StatusBadge } from "@/components/status-badge";
+import { PageTitle } from "@/components/page-title";
 import {
   transactionsExtended,
   internalTransactions,
@@ -17,7 +18,7 @@ import { MobileCard } from "@/components/mobile-card";
 
 const statusIcon = {
   confirmed: <CheckCircle className="h-4 w-4 text-[#22C55E]" />,
-  pending: <Clock className="h-4 w-4 text-[#F2994A]" />,
+  pending: <Clock className="h-4 w-4 text-[#EB5757]" />,
   failed: <XCircle className="h-4 w-4 text-[#EB5757]" />,
 };
 
@@ -47,7 +48,7 @@ export default function TxDetailPage({
       <div className="px-2.5 py-4">
         <div className="flex flex-col items-center justify-center min-h-[40vh] text-center">
           <img src="/brand/3d/bee-dark.png" alt="" className="h-20 w-auto opacity-50 mb-4" />
-          <h1 className="text-lg font-semibold mb-1">Transaction Not Found</h1>
+          <h1 className="text-xl font-semibold mb-1">Transaction Not Found</h1>
           <p className="text-sm text-muted-foreground mb-4">Transaction {hash.slice(0, 10)}... does not exist.</p>
           <Link href="/transactions" className="text-sm text-primary hover:underline">View all transactions</Link>
         </div>
@@ -148,7 +149,11 @@ export default function TxDetailPage({
   ];
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
+      <PageTitle title="Transaction Details" />
+      <Link href="/transactions" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 w-fit">
+        <ArrowLeft className="h-3.5 w-3.5" /> Back to Transactions
+      </Link>
 
       <h1 className="text-xl font-semibold tracking-tight flex items-center gap-2">
         Transaction Details
@@ -223,7 +228,7 @@ export default function TxDetailPage({
                   key={i}
                   rows={[
                     { label: "Name", value: <span className="font-mono-data text-[#FFC933]">{param.name}</span> },
-                    { label: "Type", value: <span className="font-mono-data text-[#9985FF]">{param.type}</span> },
+                    { label: "Type", value: <span className="font-mono-data text-[#6E9FFF]">{param.type}</span> },
                     { label: "Value", value: <span className="font-mono-data text-xs break-all">{param.type === "address" ? <HashLink hash={param.value} type="address" /> : param.value}</span> },
                   ]}
                 />
@@ -253,7 +258,7 @@ export default function TxDetailPage({
                 <div key={i} className="row-hover grid grid-cols-[30px_120px_100px_1fr] gap-3 items-center px-5 py-2.5 border-b border-border last:border-0">
                   <span className="font-mono-data text-xs text-muted-foreground">{i}</span>
                   <span className="font-mono-data text-sm text-[#FFC933]">{param.name}</span>
-                  <span className="font-mono-data text-xs text-[#9985FF]">{param.type}</span>
+                  <span className="font-mono-data text-xs text-[#6E9FFF]">{param.type}</span>
                   <span className="font-mono-data text-xs break-all">
                     {param.type === "address" ? <HashLink hash={param.value} type="address" /> : param.value}
                   </span>
@@ -405,7 +410,7 @@ export default function TxDetailPage({
                   <MobileCard
                     key={log.logIndex}
                     rows={[
-                      { label: "Event", value: <span className="inline-flex px-1.5 py-0.5 rounded-[3px] text-[11px] font-medium bg-[#9985FF]/10 text-[#9985FF]">{log.eventName}</span> },
+                      { label: "Event", value: <span className="inline-flex px-1.5 py-0.5 rounded-[3px] text-[11px] font-medium bg-[#6E9FFF]/10 text-[#6E9FFF]">{log.eventName}</span> },
                       { label: "Contract", value: <HashLink hash={log.address} type="address" /> },
                       { label: "Block", value: <span className="font-mono-data text-xs">#{log.blockNumber.toLocaleString()}</span> },
                     ]}
@@ -430,7 +435,7 @@ export default function TxDetailPage({
                         <tr key={log.logIndex} className="border-b border-border last:border-0 hover:bg-secondary transition-colors">
                           <td className="px-5 py-2.5 font-mono-data text-muted-foreground">{log.logIndex}</td>
                           <td className="px-5 py-2.5"><HashLink hash={log.address} type="address" /></td>
-                          <td className="px-5 py-2.5"><span className="inline-flex px-1.5 py-0.5 rounded-[3px] text-[11px] font-medium bg-[#9985FF]/10 text-[#9985FF]">{log.eventName}</span></td>
+                          <td className="px-5 py-2.5"><span className="inline-flex px-1.5 py-0.5 rounded-[3px] text-[11px] font-medium bg-[#6E9FFF]/10 text-[#6E9FFF]">{log.eventName}</span></td>
                           <td className="px-5 py-2.5 font-mono-data text-xs text-muted-foreground">{truncate(log.topics[0], 24)}</td>
                           <td className="px-5 py-2.5 font-mono-data text-xs text-muted-foreground">{truncate(log.data, 24)}</td>
                         </tr>

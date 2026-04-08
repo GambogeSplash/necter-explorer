@@ -2,7 +2,9 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Coins, TrendingUp, DollarSign, CircleDot } from "lucide-react";
+import { SortableHeader } from "@/components/sortable-header";
 import {
   AreaChart,
   Area,
@@ -46,9 +48,10 @@ const supplyBreakdown = [
   { label: "Burned", amount: "2.0M", pct: 1.6, color: "#EB5757" },
 ];
 
-const PIE_COLORS = ["#FFC933", "#6E9FFF", "#9985FF", "#22C55E", "#F2994A", "#777470"];
+const PIE_COLORS = ["#FFC933", "#6E9FFF", "#22C55E", "#EB5757", "#777470", "#9b8b5b"];
 
 type Tab = "registry" | "necta";
+type SortKey = "name" | "price" | "change24h" | "volume24h" | "holders";
 
 export default function TokensPage() {
   const router = useRouter();
@@ -57,8 +60,59 @@ export default function TokensPage() {
   const [dateRange, setDateRange] = useState("30d");
   const [holdersPage, setHoldersPage] = useState(1);
   const [transfersPage, setTransfersPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey | null>(null);
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const holdersPerPage = 5;
   const transfersPerPage = 5;
+
+  const handleSort = (key: string) => {
+    const k = key as SortKey;
+    if (sortKey === k) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    else {
+      setSortKey(k);
+      setSortDir("desc");
+    }
+  };
+
+  const sortedTokens = useMemo(() => {
+    let data = [...erc20Tokens];
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      data = data.filter(
+        (t) => t.name.toLowerCase().includes(q) || t.symbol.toLowerCase().includes(q),
+      );
+    }
+    if (sortKey) {
+      data.sort((a, b) => {
+        const av =
+          sortKey === "name"
+            ? a.name
+            : sortKey === "price"
+              ? parseFloat(a.price.replace(/,/g, ""))
+              : sortKey === "change24h"
+                ? parseFloat(a.change24h)
+                : sortKey === "volume24h"
+                  ? parseFloat(a.volume24h.replace(/,/g, ""))
+                  : a.holders;
+        const bv =
+          sortKey === "name"
+            ? b.name
+            : sortKey === "price"
+              ? parseFloat(b.price.replace(/,/g, ""))
+              : sortKey === "change24h"
+                ? parseFloat(b.change24h)
+                : sortKey === "volume24h"
+                  ? parseFloat(b.volume24h.replace(/,/g, ""))
+                  : b.holders;
+        const cmp = typeof av === "number" && typeof bv === "number"
+          ? av - bv
+          : String(av).localeCompare(String(bv));
+        return sortDir === "asc" ? cmp : -cmp;
+      });
+    }
+    return data;
+  }, [search, sortKey, sortDir]);
 
   const pagedHolders = tokenHolders.slice((holdersPage - 1) * holdersPerPage, holdersPage * holdersPerPage);
   const pagedTransfers = transfers.slice((transfersPage - 1) * transfersPerPage, transfersPage * transfersPerPage);
@@ -73,12 +127,17 @@ export default function TokensPage() {
   }, []);
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <PageTitle title="Tokens" />
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">Tokens</h1>
-          <p className="text-xs text-muted-foreground mt-0.5">All tokens on the Necter Network</p>
+        <h1 className="text-xl font-semibold tracking-tight">Tokens</h1>
+        <div className="hidden sm:flex items-center gap-2 text-[11px] text-muted-foreground">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-60 animate-ping" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#22C55E]" />
+          </span>
+          <span className="font-mono-data">${networkStats.nectaPrice}</span>
+          <span>NECTA · live</span>
         </div>
       </div>
 
@@ -101,46 +160,80 @@ export default function TokensPage() {
       {tab === "registry" && (
         <div className="animate-fadeIn space-y-4">
           <div className="rounded-lg bg-card border border-border overflow-hidden">
-            <div className="px-5 py-3 border-b border-border">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-3 border-b border-border">
               <h2 className="text-sm font-medium">Token Registry</h2>
+              <input
+                type="text"
+                placeholder="Search by name or symbol..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full sm:w-64 px-3 py-1.5 rounded-md bg-secondary border border-border text-[12px] placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              />
             </div>
-            <div className="hidden md:block">
-              <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-3 px-5 py-2.5 border-b border-border text-[11px] text-muted-foreground uppercase tracking-wider">
-                <span>Token</span><span className="text-right">Price</span><span className="text-right">24h Change</span><span className="text-right">Volume (24h)</span><span className="text-right">Holders</span><span className="text-right">Total Supply</span>
+            {sortedTokens.length === 0 ? (
+              <div className="px-5 py-12 text-center">
+                <p className="text-sm text-muted-foreground">No tokens match your search.</p>
+                <button
+                  onClick={() => setSearch("")}
+                  className="mt-2 text-[11px] text-primary hover:underline"
+                >
+                  Clear search
+                </button>
               </div>
-              {erc20Tokens.map((token) => {
-                const change = parseFloat(token.change24h);
-                return (
-                  <div key={token.symbol} onClick={() => router.push(`/tokens/${token.symbol}`)} className="row-hover cursor-pointer grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-3 items-center px-5 py-3 border-b border-border last:border-0 text-sm">
-                    <div className="flex items-center gap-3">
-                      <img src={getTokenLogo(token.symbol)} alt={token.symbol} className="h-7 w-7 rounded-full shrink-0" />
-                      <div>
-                        <span className="font-medium">{token.name}</span>
-                        <span className="text-xs text-muted-foreground ml-2">{token.symbol}</span>
-                      </div>
+            ) : (
+              <>
+                <div className="hidden md:block">
+                  <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-3 px-5 py-2.5 border-b border-border text-[10px] text-muted-foreground uppercase tracking-[0.06em]">
+                    <SortableHeader label="Token" sortKey="name" currentSort={sortKey} direction={sortDir} onSort={handleSort} />
+                    <div className="text-right">
+                      <SortableHeader label="Price" sortKey="price" currentSort={sortKey} direction={sortDir} onSort={handleSort} />
                     </div>
-                    <span className="text-right font-mono-data">${token.price}</span>
-                    <span className={`text-right font-mono-data ${change >= 0 ? "text-[#22C55E]" : "text-[#EB5757]"}`}>{change >= 0 ? "+" : ""}{token.change24h}%</span>
-                    <span className="text-right font-mono-data text-muted-foreground">${token.volume24h}</span>
-                    <span className="text-right font-mono-data text-muted-foreground">{token.holders.toLocaleString()}</span>
-                    <span className="text-right font-mono-data text-muted-foreground">{token.totalSupply}</span>
+                    <div className="text-right">
+                      <SortableHeader label="24h" sortKey="change24h" currentSort={sortKey} direction={sortDir} onSort={handleSort} />
+                    </div>
+                    <div className="text-right">
+                      <SortableHeader label="Volume 24h" sortKey="volume24h" currentSort={sortKey} direction={sortDir} onSort={handleSort} />
+                    </div>
+                    <div className="text-right">
+                      <SortableHeader label="Holders" sortKey="holders" currentSort={sortKey} direction={sortDir} onSort={handleSort} />
+                    </div>
+                    <span className="text-right">Total Supply</span>
                   </div>
-                );
-              })}
-            </div>
-            <div className="md:hidden p-3 space-y-3">
-              {erc20Tokens.map((token) => {
-                const change = parseFloat(token.change24h);
-                return (
-                  <MobileCard key={token.symbol} onClick={() => router.push(`/tokens/${token.symbol}`)} rows={[
-                    { label: "Token", value: <div className="flex items-center gap-2"><img src={getTokenLogo(token.symbol)} alt="" className="h-5 w-5 rounded-full" /><span className="font-medium">{token.name}</span></div> },
-                    { label: "Price", value: <span className="font-mono-data">${token.price}</span> },
-                    { label: "24h", value: <span className={`font-mono-data ${change >= 0 ? "text-[#22C55E]" : "text-[#EB5757]"}`}>{change >= 0 ? "+" : ""}{token.change24h}%</span> },
-                    { label: "Holders", value: <span className="font-mono-data">{token.holders.toLocaleString()}</span> },
-                  ]} />
-                );
-              })}
-            </div>
+                  {sortedTokens.map((token) => {
+                    const change = parseFloat(token.change24h);
+                    return (
+                      <Link key={token.symbol} href={`/tokens/${token.symbol}`} className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-3 items-center px-5 py-3 border-b border-border last:border-0 text-sm hover:bg-secondary/30 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <img src={getTokenLogo(token.symbol)} alt={token.symbol} className="h-7 w-7 rounded-full shrink-0" />
+                          <div>
+                            <span className="font-medium">{token.name}</span>
+                            <span className="text-xs text-muted-foreground ml-2">{token.symbol}</span>
+                          </div>
+                        </div>
+                        <span className="text-right font-mono-data tabular-nums">${token.price}</span>
+                        <span className={`text-right font-mono-data tabular-nums ${change >= 0 ? "text-[#22C55E]" : "text-[#EB5757]"}`}>{change >= 0 ? "+" : ""}{token.change24h}%</span>
+                        <span className="text-right font-mono-data text-muted-foreground tabular-nums">${token.volume24h}</span>
+                        <span className="text-right font-mono-data text-muted-foreground tabular-nums">{token.holders.toLocaleString()}</span>
+                        <span className="text-right font-mono-data text-muted-foreground tabular-nums">{token.totalSupply}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+                <div className="md:hidden p-3 space-y-3">
+                  {sortedTokens.map((token) => {
+                    const change = parseFloat(token.change24h);
+                    return (
+                      <MobileCard key={token.symbol} onClick={() => router.push(`/tokens/${token.symbol}`)} rows={[
+                        { label: "Token", value: <div className="flex items-center gap-2"><img src={getTokenLogo(token.symbol)} alt="" className="h-5 w-5 rounded-full" /><span className="font-medium">{token.name}</span></div> },
+                        { label: "Price", value: <span className="font-mono-data">${token.price}</span> },
+                        { label: "24h", value: <span className={`font-mono-data ${change >= 0 ? "text-[#22C55E]" : "text-[#EB5757]"}`}>{change >= 0 ? "+" : ""}{token.change24h}%</span> },
+                        { label: "Holders", value: <span className="font-mono-data">{token.holders.toLocaleString()}</span> },
+                      ]} />
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

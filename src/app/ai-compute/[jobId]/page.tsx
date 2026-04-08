@@ -53,7 +53,7 @@ const computeRequirements = [
 const bidStatusColor: Record<string, string> = {
   accepted: "bg-[#22C55E]/10 text-[#22C55E]",
   rejected: "bg-[#EB5757]/10 text-[#EB5757]",
-  pending: "bg-[#F2994A]/10 text-[#F2994A]",
+  pending: "bg-[#EB5757]/10 text-[#EB5757]",
 };
 
 export default function JobDetailPage({ params }: { params: Promise<{ jobId: string }> }) {
@@ -74,7 +74,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ jobId: str
   const currentStep = stepIndex[job.status] ?? 0;
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <Link href="/ai-compute" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
         <ArrowLeft className="h-3.5 w-3.5" /> AI Compute
       </Link>
@@ -123,7 +123,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ jobId: str
           { label: "Poster", value: <HashLink hash={job.poster} type="address" /> },
           { label: "Worker", value: job.worker ? <HashLink hash={job.worker} type="address" /> : <span className="text-muted-foreground">Unassigned</span> },
           { label: "Status", value: <StatusBadge status={job.status} /> },
-          { label: "Proof Type", value: <span className="inline-flex px-2 py-0.5 rounded-md text-[11px] font-medium bg-[#9985FF]/10 text-[#9985FF] capitalize">{job.proofType}</span> },
+          { label: "Proof Type", value: <span className="inline-flex px-2 py-0.5 rounded-md text-[11px] font-medium bg-[#6E9FFF]/10 text-[#6E9FFF] capitalize">{job.proofType}</span> },
           { label: "Reward", value: <span className="font-mono-data">{parseInt(job.reward).toLocaleString()} NECTA</span> },
           { label: "Created", value: <TimeAgo timestamp={job.createdAt} /> },
           { label: "Completed", value: job.completedAt ? <TimeAgo timestamp={job.completedAt} /> : <span className="text-muted-foreground">—</span> },
@@ -161,7 +161,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ jobId: str
               </div>
               <div className="flex items-center py-3 px-5">
                 <span className="text-sm text-muted-foreground w-44">TEE Type</span>
-                <span className="inline-flex px-2 py-0.5 rounded-md text-[11px] font-medium bg-[#9985FF]/10 text-[#9985FF]">Intel SGX</span>
+                <span className="inline-flex px-2 py-0.5 rounded-md text-[11px] font-medium bg-[#6E9FFF]/10 text-[#6E9FFF]">Intel SGX</span>
               </div>
             </>
           )}
@@ -169,7 +169,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ jobId: str
             <>
               <div className="flex items-center py-3 px-5 border-b border-border">
                 <span className="text-sm text-muted-foreground w-44">ZK Proof Hash</span>
-                <span className="font-mono-data text-[#9985FF]">0xzk00a1b2c3d4e5f6a7b8c9d0</span>
+                <span className="font-mono-data text-[#6E9FFF]">0xzk00a1b2c3d4e5f6a7b8c9d0</span>
               </div>
               <div className="flex items-center py-3 px-5 border-b border-border">
                 <span className="text-sm text-muted-foreground w-44">On-Chain Anchor</span>

@@ -53,7 +53,7 @@ function generateSteps(txHash: string): JourneyStep[] {
       {
         title: "AI Job Posted",
         module: "AI Compute",
-        color: "#9985FF",
+        color: "#6E9FFF",
         txHash: makeHash(1),
         timestamp: ts(24),
         status: "complete",
@@ -121,7 +121,7 @@ function generateSteps(txHash: string): JourneyStep[] {
     {
       title: "Proposal Created",
       module: "Governance",
-      color: "#9985FF",
+      color: "#6E9FFF",
       txHash: makeHash(0),
       timestamp: ts(168),
       status: "complete",
@@ -129,7 +129,7 @@ function generateSteps(txHash: string): JourneyStep[] {
     {
       title: "Voting Period",
       module: "Governance",
-      color: "#9985FF",
+      color: "#6E9FFF",
       txHash: makeHash(1),
       timestamp: ts(96),
       status: "complete",
@@ -137,7 +137,7 @@ function generateSteps(txHash: string): JourneyStep[] {
     {
       title: "Quorum Reached",
       module: "Governance",
-      color: "#9985FF",
+      color: "#6E9FFF",
       txHash: makeHash(2),
       timestamp: ts(48),
       status: "complete",
@@ -167,8 +167,7 @@ export function TransactionJourney({ txHash }: { txHash: string }) {
   return (
     <div className="rounded-lg bg-card border border-border p-5">
       <div className="flex items-center gap-2 mb-4">
-        <Route className="h-4 w-4 text-muted-foreground" />
-        <h2 className="text-sm font-medium">Transaction Journey</h2>
+                <h2 className="text-sm font-medium">Transaction Journey</h2>
       </div>
 
       <div className="flex items-start gap-0 overflow-x-auto pb-2">
@@ -214,8 +213,8 @@ export function TransactionJourney({ txHash }: { txHash: string }) {
                   </>
                 ) : (
                   <>
-                    <Loader2 className="h-3 w-3 text-[#F2994A] animate-spin" />
-                    <span className="text-[10px] text-[#F2994A]">Pending</span>
+                    <Loader2 className="h-3 w-3 text-[#EB5757] animate-spin" />
+                    <span className="text-[10px] text-[#EB5757]">Pending</span>
                   </>
                 )}
               </div>

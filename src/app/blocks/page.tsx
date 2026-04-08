@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Box, Clock, Activity, Fuel } from "lucide-react";
 import { HashLink } from "@/components/hash-link";
 import { MobileCard } from "@/components/mobile-card";
+import { StatCard } from "@/components/stat-card";
 import { TimeAgo } from "@/components/time-ago";
 import { Pagination } from "@/components/pagination";
 import { SortableHeader } from "@/components/sortable-header";
@@ -27,6 +29,13 @@ export default function BlocksPage() {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDir, setSortDir] = useState<SortDir | null>(null);
 
+  // Live indicator: simulated tick for "block height" growing
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    const i = setInterval(() => setTick((p) => p + 1), 6000);
+    return () => clearInterval(i);
+  }, []);
+
   function handleSort(key: string) {
     const k = key as SortKey;
     if (sortKey === k) {
@@ -38,13 +47,25 @@ export default function BlocksPage() {
     setPage(1);
   }
 
+  // Derived stats
+  const latestHeight = blocksExtended[0].height + tick;
+  const avgBlockTime = "2.4s";
+  const totalToday = (blocksExtended.length * 32).toLocaleString();
+  const avgGasUsed = (
+    blocksExtended.reduce((s, b) => s + b.gasUsed, 0) /
+    blocksExtended.length /
+    1_000_000
+  ).toFixed(1);
+
   const sorted = useMemo(() => {
     const data = [...blocksExtended];
     if (sortKey && sortDir) {
       data.sort((a, b) => {
         const av = a[sortKey];
         const bv = b[sortKey];
-        return sortDir === "asc" ? (av as number) - (bv as number) : (bv as number) - (av as number);
+        return sortDir === "asc"
+          ? (av as number) - (bv as number)
+          : (bv as number) - (av as number);
       });
     }
     return data;
@@ -54,15 +75,50 @@ export default function BlocksPage() {
   const paginated = sorted.slice((page - 1) * pageSize, page * pageSize);
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <PageTitle title="Blocks" />
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-xl font-semibold tracking-tight">Blocks</h1>
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-secondary text-muted-foreground">
-            {blocksExtended.length.toLocaleString()}
+        <h1 className="text-xl font-semibold tracking-tight">Blocks</h1>
+        <div className="hidden sm:flex items-center gap-2 text-[11px] text-muted-foreground">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-60 animate-ping" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#22C55E]" />
           </span>
+          <span className="font-mono-data tabular-nums">#{latestHeight.toLocaleString()}</span>
+          <span>latest height</span>
         </div>
+      </div>
+
+      {/* Stats — shared StatCard component */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <StatCard
+          title="Latest Height"
+          value={`#${latestHeight.toLocaleString()}`}
+          change="+1 just now"
+          trend="up"
+          icon={Box}
+        />
+        <StatCard
+          title="Avg Block Time"
+          value={avgBlockTime}
+          change="-0.1s"
+          trend="up"
+          icon={Clock}
+        />
+        <StatCard
+          title="Blocks Today"
+          value={totalToday}
+          change="+2,847"
+          trend="up"
+          icon={Activity}
+        />
+        <StatCard
+          title="Avg Gas Used"
+          value={`${avgGasUsed}M`}
+          change="+8.4%"
+          trend="up"
+          icon={Fuel}
+        />
       </div>
 
       {/* Mobile cards */}
@@ -146,7 +202,7 @@ export default function BlocksPage() {
                       {block.reward} NECTA
                     </td>
                     <td className="px-5 py-2.5 text-right">
-                      <span className="inline-flex px-1.5 py-0.5 rounded-md text-[10px] font-medium bg-[#9985FF]/10 text-[#9985FF]">
+                      <span className="inline-flex px-1.5 py-0.5 rounded-md text-[10px] font-medium bg-[#6E9FFF]/10 text-[#6E9FFF]">
                         Verified
                       </span>
                     </td>

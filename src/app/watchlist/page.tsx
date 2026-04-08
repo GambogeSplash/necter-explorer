@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
-  Eye,
   X,
   Wallet,
   Coins,
@@ -16,12 +15,12 @@ import {
   TrendingUp,
   Shield,
   FileText,
-  DollarSign,
 } from "lucide-react";
 import { HashLink } from "@/components/hash-link";
 import { TimeAgo } from "@/components/time-ago";
 import { PageTitle } from "@/components/page-title";
 import { MobileCard } from "@/components/mobile-card";
+import { StatCard } from "@/components/stat-card";
 import {
   getWatchlist,
   removeFromWatchlist,
@@ -47,8 +46,8 @@ const TYPE_BADGE: Record<
   address: { label: "Address", color: "text-[#FFC933]", bg: "bg-[#FFC933]/10" },
   token: { label: "Token", color: "text-[#22C55E]", bg: "bg-[#22C55E]/10" },
   operator: { label: "Operator", color: "text-[#6E9FFF]", bg: "bg-[#6E9FFF]/10" },
-  contract: { label: "Contract", color: "text-[#9985FF]", bg: "bg-[#9985FF]/10" },
-  device: { label: "Device", color: "text-[#F2994A]", bg: "bg-[#F2994A]/10" },
+  contract: { label: "Contract", color: "text-[#6E9FFF]", bg: "bg-[#6E9FFF]/10" },
+  device: { label: "Device", color: "text-[#EB5757]", bg: "bg-[#EB5757]/10" },
 };
 
 const MOCK_ACTIVITY = [
@@ -75,15 +74,15 @@ const MOCK_ACTIVITY = [
   },
   {
     icon: Shield,
-    color: "text-[#F2994A]",
-    bg: "bg-[#F2994A]/10",
+    color: "text-[#EB5757]",
+    bg: "bg-[#EB5757]/10",
     description: "DEV-1000 attestation verified",
     timeAgo: new Date(Date.now() - 5 * 3600_000).toISOString(),
   },
   {
     icon: FileText,
-    color: "text-[#9985FF]",
-    bg: "bg-[#9985FF]/10",
+    color: "text-[#6E9FFF]",
+    bg: "bg-[#6E9FFF]/10",
     description: "Contract DeviceRegistry called 847 times today",
     timeAgo: new Date(Date.now() - 8 * 3600_000).toISOString(),
   },
@@ -148,104 +147,32 @@ export default function WatchlistPage() {
   const portfolioValue = addressCount > 0 ? addressCount * 12_847 + (addressCount * 7 % 1000) : 0;
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <PageTitle title="Watchlist" />
       {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <div className="rounded-lg bg-secondary p-2">
-              <Eye className="h-5 w-5 text-muted-foreground" />
-            </div>
-            <div>
-              <h1 className="text-xl font-semibold tracking-tight">
-                My Watchlist
-              </h1>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Track addresses, tokens, operators, and contracts
-              </p>
-            </div>
-          </div>
-        </div>
-        <Image
-          src="/brand/3d/bee-dark.png"
-          alt=""
-          width={80}
-          height={80}
-          className="opacity-80 shrink-0 hidden sm:block"
-        />
+      <div>
+        <h1 className="text-xl font-semibold tracking-tight">My Watchlist</h1>
       </div>
 
       {/* Stats Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="flex items-center gap-3 p-4 rounded-lg bg-card border border-border">
-          <div className="rounded-lg bg-secondary p-2 shrink-0">
-            <Wallet className="h-4 w-4 text-[#FFC933]" />
-          </div>
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.04em] text-muted-foreground">
-              Tracked Addresses
-            </p>
-            <p className="text-lg font-semibold font-mono-data">
-              {addressCount}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3 p-4 rounded-lg bg-card border border-border">
-          <div className="rounded-lg bg-secondary p-2 shrink-0">
-            <Coins className="h-4 w-4 text-[#22C55E]" />
-          </div>
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.04em] text-muted-foreground">
-              Tracked Tokens
-            </p>
-            <p className="text-lg font-semibold font-mono-data">
-              {tokenCount}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3 p-4 rounded-lg bg-card border border-border">
-          <div className="rounded-lg bg-secondary p-2 shrink-0">
-            <Users className="h-4 w-4 text-[#6E9FFF]" />
-          </div>
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.04em] text-muted-foreground">
-              Tracked Operators
-            </p>
-            <p className="text-lg font-semibold font-mono-data">
-              {operatorCount}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3 p-4 rounded-lg bg-card border border-border">
-          <div className="rounded-lg bg-secondary p-2 shrink-0">
-            <LayoutList className="h-4 w-4 text-muted-foreground" />
-          </div>
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.04em] text-muted-foreground">
-              Total Items
-            </p>
-            <p className="text-lg font-semibold font-mono-data">
-              {items.length}
-            </p>
-          </div>
-        </div>
+        <StatCard title="Tracked Addresses" value={addressCount.toString()} icon={Wallet} />
+        <StatCard title="Tracked Tokens" value={tokenCount.toString()} icon={Coins} />
+        <StatCard title="Tracked Operators" value={operatorCount.toString()} icon={Users} />
+        <StatCard title="Total Items" value={items.length.toString()} icon={LayoutList} />
       </div>
 
       {/* Portfolio Value Tracker */}
       {addressCount > 0 && (
-        <div className="rounded-lg bg-card border border-border p-6">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="rounded-lg bg-secondary p-2">
-              <DollarSign className="h-5 w-5 text-[#22C55E]" />
-            </div>
-            <h2 className="text-sm font-semibold tracking-tight">Portfolio Overview</h2>
+        <div className="rounded-lg bg-card border border-border p-5">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-medium">Portfolio Overview</h2>
+            <span className="text-[11px] text-muted-foreground">
+              Across {addressCount} tracked address{addressCount !== 1 ? "es" : ""}
+            </span>
           </div>
-          <p className="text-3xl font-semibold font-mono-data">
-            Estimated Total: ${portfolioValue.toLocaleString()}
-          </p>
-          <p className="text-xs text-muted-foreground mt-1">
-            Across {addressCount} tracked address{addressCount !== 1 ? "es" : ""}
+          <p className="text-3xl font-semibold font-mono-data tracking-tight">
+            ${portfolioValue.toLocaleString()}
           </p>
         </div>
       )}
@@ -430,8 +357,7 @@ export default function WatchlistPage() {
       <div className="rounded-lg bg-card border border-border overflow-hidden">
         <div className="px-5 py-3 border-b border-border">
           <h2 className="text-sm font-semibold tracking-tight">Recent Activity</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Latest events across watched items</p>
-        </div>
+          </div>
         {MOCK_ACTIVITY.map((event, i) => {
           const Icon = event.icon;
           return (

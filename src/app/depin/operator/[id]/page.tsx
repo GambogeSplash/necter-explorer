@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { use, useState, useMemo } from "react";
-import { ArrowLeft, Radio, Briefcase, Cpu, Users } from "lucide-react";
+import { ArrowLeft, Briefcase, Cpu, Users } from "lucide-react";
 import { operators, devices } from "@/lib/mock-data";
 import { HashLink } from "@/components/hash-link";
 import { StatusBadge } from "@/components/status-badge";
@@ -60,23 +60,20 @@ export default function OperatorDetailPage({ params }: { params: Promise<{ id: s
     { label: "Status", value: <StatusBadge status={op.status} /> },
     { label: "Stake", value: <span className="font-mono-data">{Number(op.stake).toLocaleString()} NECTA</span> },
     { label: "Delegations", value: <span className="font-mono-data">{op.delegations}</span> },
-    { label: "Uptime", value: <span className={`font-mono-data ${op.uptimePercent > 95 ? "text-[#22C55E]" : "text-[#F2994A]"}`}>{op.uptimePercent.toFixed(1)}%</span> },
+    { label: "Uptime", value: <span className={`font-mono-data ${op.uptimePercent > 95 ? "text-[#22C55E]" : "text-[#EB5757]"}`}>{op.uptimePercent.toFixed(1)}%</span> },
     { label: "Jobs Completed", value: <span className="font-mono-data">{op.jobsCompleted.toLocaleString()}</span> },
     { label: "Slashes", value: <span className={`font-mono-data ${op.slashes > 0 ? "text-[#EB5757]" : ""}`}>{op.slashes}</span> },
-    { label: "Reputation", value: <span className={`font-mono-data font-medium ${op.reputation > 80 ? "text-[#22C55E]" : "text-[#F2994A]"}`}>{op.reputation}</span> },
+    { label: "Reputation", value: <span className={`font-mono-data font-medium ${op.reputation > 80 ? "text-[#22C55E]" : "text-[#EB5757]"}`}>{op.reputation}</span> },
   ];
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <Link href="/depin" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 w-fit">
         <ArrowLeft className="h-3.5 w-3.5" /> Back to DePIN
       </Link>
 
       <div className="flex items-center gap-3">
-        <div className="rounded-lg bg-secondary p-2">
-          <Radio className="h-5 w-5 text-primary" />
-        </div>
-        <h1 className="text-lg font-semibold tracking-tight">Operator {op.operatorId}</h1>
+        <h1 className="text-xl font-semibold tracking-tight">Operator {op.operatorId}</h1>
         <StatusBadge status={op.status} />
       </div>
 
@@ -119,8 +116,7 @@ export default function OperatorDetailPage({ params }: { params: Promise<{ id: s
       {/* Recent Jobs */}
       <div className="rounded-lg bg-card border border-border overflow-hidden">
         <div className="px-5 py-3 border-b border-border flex items-center gap-2">
-          <Briefcase className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-medium">Recent Jobs</h2>
+                    <h2 className="text-sm font-medium">Recent Jobs</h2>
         </div>
         {/* Mobile */}
         <div className="md:hidden space-y-3 p-4">
@@ -157,8 +153,7 @@ export default function OperatorDetailPage({ params }: { params: Promise<{ id: s
       <div className="rounded-lg bg-card border border-border overflow-hidden">
         <div className="px-5 py-3 border-b border-border flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Cpu className="h-4 w-4 text-muted-foreground" />
-            <h2 className="text-sm font-medium">Managed Devices</h2>
+                        <h2 className="text-sm font-medium">Managed Devices</h2>
           </div>
           <input
             type="text"
@@ -177,7 +172,7 @@ export default function OperatorDetailPage({ params }: { params: Promise<{ id: s
                 { label: "Device", value: <Link href={`/depin/device/${d.deviceId}`} className="font-mono-data text-xs text-primary hover:underline">{d.deviceId}</Link> },
                 { label: "Status", value: <StatusBadge status={d.status} /> },
                 { label: "Staked", value: <span className="font-mono-data text-xs">{Number(d.stakedAmount).toLocaleString()}</span> },
-                { label: "Uptime", value: <span className={`font-mono-data text-xs ${d.uptime > 95 ? "text-[#22C55E]" : "text-[#F2994A]"}`}>{d.uptime.toFixed(1)}%</span> },
+                { label: "Uptime", value: <span className={`font-mono-data text-xs ${d.uptime > 95 ? "text-[#22C55E]" : "text-[#EB5757]"}`}>{d.uptime.toFixed(1)}%</span> },
               ]}
             />
           ))}
@@ -193,7 +188,7 @@ export default function OperatorDetailPage({ params }: { params: Promise<{ id: s
               <HashLink hash={d.owner} type="address" />
               <StatusBadge status={d.status} />
               <span className="font-mono-data text-xs">{Number(d.stakedAmount).toLocaleString()}</span>
-              <span className={`font-mono-data text-xs ${d.uptime > 95 ? "text-[#22C55E]" : "text-[#F2994A]"}`}>{d.uptime.toFixed(1)}%</span>
+              <span className={`font-mono-data text-xs ${d.uptime > 95 ? "text-[#22C55E]" : "text-[#EB5757]"}`}>{d.uptime.toFixed(1)}%</span>
             </div>
           ))}
         </div>
@@ -202,8 +197,7 @@ export default function OperatorDetailPage({ params }: { params: Promise<{ id: s
       {/* Delegation Management */}
       <div className="rounded-lg bg-card border border-border overflow-hidden">
         <div className="px-5 py-3 border-b border-border flex items-center gap-2">
-          <Users className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-medium">Delegation Management</h2>
+                    <h2 className="text-sm font-medium">Delegation Management</h2>
         </div>
         {/* Mobile */}
         <div className="md:hidden space-y-3 p-4">

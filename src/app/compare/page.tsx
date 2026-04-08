@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { Scale } from "lucide-react";
+import { useState, useMemo, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { operators, erc20Tokens } from "@/lib/mock-data";
 import { HashLink } from "@/components/hash-link";
 import { GaugeChart } from "@/components/gauge-chart";
@@ -38,12 +38,21 @@ function generateUptimeData(operatorId: string) {
   }));
 }
 
-export default function ComparePage() {
-  const [compareType, setCompareType] = useState<CompareType>("operators");
+function ComparePageInner() {
+  const searchParams = useSearchParams();
+  const initialA =
+    operators.find((o) => o.operatorId === searchParams.get("a"))?.operatorId ??
+    operators[0].operatorId;
+  const initialB =
+    operators.find((o) => o.operatorId === searchParams.get("b"))?.operatorId ??
+    operators[1].operatorId;
+  const initialType: CompareType = searchParams.get("type") === "tokens" ? "tokens" : "operators";
+
+  const [compareType, setCompareType] = useState<CompareType>(initialType);
 
   // Operator state
-  const [opA, setOpA] = useState(operators[0].operatorId);
-  const [opB, setOpB] = useState(operators[1].operatorId);
+  const [opA, setOpA] = useState(initialA);
+  const [opB, setOpB] = useState(initialB);
 
   // Token state
   const [tokenA, setTokenA] = useState(erc20Tokens[0].symbol);
@@ -88,18 +97,10 @@ export default function ComparePage() {
   const labelB = compareType === "operators" ? b.operatorId : tB.symbol;
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <PageTitle title="Compare" />
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="rounded-lg bg-secondary p-2">
-            <Scale className="h-5 w-5 text-primary" />
-          </div>
-          <div>
-            <h1 className="text-xl font-semibold tracking-tight">Compare</h1>
-            <p className="text-xs text-muted-foreground mt-0.5">Side-by-side performance comparison</p>
-          </div>
-        </div>
+        <h1 className="text-xl font-semibold tracking-tight">Compare</h1>
       </div>
 
       {/* Entity Type Tabs */}
@@ -288,8 +289,7 @@ export default function ComparePage() {
         <div className="rounded-lg bg-card border border-border p-5 space-y-4">
           <div>
             <h2 className="text-sm font-semibold tracking-tight">Performance Over Time</h2>
-            <p className="text-xs text-muted-foreground mt-0.5">Uptime percentage over the last 7 days</p>
-          </div>
+            </div>
 
           {/* Legend */}
           <div className="flex items-center gap-6">
@@ -370,5 +370,13 @@ export default function ComparePage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ComparePage() {
+  return (
+    <Suspense fallback={<div className="max-w-[1480px] mx-auto px-2.5 py-2" />}>
+      <ComparePageInner />
+    </Suspense>
   );
 }

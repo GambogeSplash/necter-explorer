@@ -58,12 +58,12 @@ type TabId = "policies" | "access" | "proofs";
 const policyTypeColors: Record<string, string> = {
   "data-retention": "bg-[#6E9FFF]/10 text-[#6E9FFF]",
   "access-control": "bg-[#FFC933]/10 text-[#FFC933]",
-  privacy: "bg-[#9985FF]/10 text-[#9985FF]",
-  "geo-restriction": "bg-[#F2994A]/10 text-[#F2994A]",
+  privacy: "bg-[#6E9FFF]/10 text-[#6E9FFF]",
+  "geo-restriction": "bg-[#EB5757]/10 text-[#EB5757]",
 };
 
 const proofTypeColors: Record<string, string> = {
-  "zk-snark": "bg-[#9985FF]/10 text-[#9985FF]",
+  "zk-snark": "bg-[#6E9FFF]/10 text-[#6E9FFF]",
   "zk-stark": "bg-[#6E9FFF]/10 text-[#6E9FFF]",
   merkle: "bg-[#FFC933]/10 text-[#FFC933]",
 };
@@ -104,19 +104,11 @@ export default function SovereigntyPage() {
   };
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <PageTitle title="Data Sovereignty" />
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="rounded-lg bg-secondary p-2">
-            <Lock className="h-5 w-5 text-primary" />
-          </div>
-          <div>
-            <h1 className="text-lg font-semibold tracking-tight">Data Sovereignty</h1>
-            <p className="text-xs text-muted-foreground">Policy contracts, access logs, and ZK compliance proofs</p>
-          </div>
-        </div>
+        <h1 className="text-xl font-semibold tracking-tight">Data Sovereignty</h1>
       </div>
 
       {/* Stats */}
@@ -150,12 +142,12 @@ export default function SovereigntyPage() {
             </div>
           </div>
           <div className="rounded-lg bg-card border border-border flex items-center gap-4 px-5 py-4">
-            <div className="rounded-lg bg-[#F2994A]/10 p-3 shrink-0">
-              <Eye className="h-5 w-5 text-[#F2994A]" />
+            <div className="rounded-lg bg-[#EB5757]/10 p-3 shrink-0">
+              <Eye className="h-5 w-5 text-[#EB5757]" />
             </div>
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.04em] text-muted-foreground">Expiring Soon</p>
-              <p className="text-2xl font-semibold font-mono-data text-[#F2994A]">8</p>
+              <p className="text-2xl font-semibold font-mono-data text-[#EB5757]">8</p>
             </div>
           </div>
         </div>

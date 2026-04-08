@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { use, useState } from "react";
-import { ArrowLeft, Radio, Layers, Cpu, ShieldCheck, Activity } from "lucide-react";
+import { ArrowLeft, Layers, Cpu, ShieldCheck, Activity } from "lucide-react";
 import { gateways } from "@/lib/mock-data";
 import { HashLink } from "@/components/hash-link";
 import { StatusBadge } from "@/components/status-badge";
@@ -53,23 +53,20 @@ export default function GatewayDetailPage({ params }: { params: Promise<{ id: st
     { label: "Operator ID", value: <Link href={`/depin/operator/${gw.operatorId}`} className="font-mono-data text-primary hover:underline">{gw.operatorId}</Link> },
     { label: "Operator Address", value: <HashLink hash={gw.operatorAddress} type="address" /> },
     { label: "Stake", value: <span className="font-mono-data">{Number(gw.stake).toLocaleString()} NECTA</span> },
-    { label: "Uptime", value: <span className={`font-mono-data ${gw.uptime > 95 ? "text-[#22C55E]" : "text-[#F2994A]"}`}>{gw.uptime.toFixed(1)}%</span> },
+    { label: "Uptime", value: <span className={`font-mono-data ${gw.uptime > 95 ? "text-[#22C55E]" : "text-[#EB5757]"}`}>{gw.uptime.toFixed(1)}%</span> },
     { label: "Batch Count", value: <span className="font-mono-data">{gw.batchCount.toLocaleString()}</span> },
     { label: "Device Count", value: <span className="font-mono-data">{gw.deviceCount}</span> },
     { label: "Last Batch", value: <TimeAgo timestamp={gw.lastBatchTimestamp} /> },
   ];
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <Link href="/iot" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 w-fit">
         <ArrowLeft className="h-3.5 w-3.5" /> Back to IoT
       </Link>
 
       <div className="flex items-center gap-3">
-        <div className="rounded-lg bg-secondary p-2">
-          <Radio className="h-5 w-5 text-primary" />
-        </div>
-        <h1 className="text-lg font-semibold tracking-tight">Gateway {gw.gatewayId}</h1>
+        <h1 className="text-xl font-semibold tracking-tight">Gateway {gw.gatewayId}</h1>
       </div>
 
       {/* Gateway Info */}
@@ -89,8 +86,7 @@ export default function GatewayDetailPage({ params }: { params: Promise<{ id: st
         {/* Recent Batches */}
         <div className="rounded-lg bg-card border border-border overflow-hidden">
           <div className="px-5 py-3 border-b border-border flex items-center gap-2">
-            <Layers className="h-4 w-4 text-muted-foreground" />
-            <h2 className="text-sm font-medium">Recent Batches</h2>
+                        <h2 className="text-sm font-medium">Recent Batches</h2>
           </div>
           {/* Mobile */}
           <div className="md:hidden space-y-3 p-4">
@@ -126,8 +122,7 @@ export default function GatewayDetailPage({ params }: { params: Promise<{ id: st
         {/* Connected Devices */}
         <div className="rounded-lg bg-card border border-border overflow-hidden">
           <div className="px-5 py-3 border-b border-border flex items-center gap-2">
-            <Cpu className="h-4 w-4 text-muted-foreground" />
-            <h2 className="text-sm font-medium">Connected Devices</h2>
+                        <h2 className="text-sm font-medium">Connected Devices</h2>
           </div>
           {/* Mobile */}
           <div className="md:hidden space-y-3 p-4">
@@ -161,8 +156,7 @@ export default function GatewayDetailPage({ params }: { params: Promise<{ id: st
       {/* Batch Verification */}
       <div className="rounded-lg bg-card border border-border overflow-hidden">
         <div className="px-5 py-3 border-b border-border flex items-center gap-2">
-          <ShieldCheck className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-medium">Batch Verification</h2>
+                    <h2 className="text-sm font-medium">Batch Verification</h2>
         </div>
         {/* Mobile */}
         <div className="md:hidden space-y-3 p-4">
@@ -212,8 +206,7 @@ export default function GatewayDetailPage({ params }: { params: Promise<{ id: st
       {/* Device Telemetry Summary */}
       <div className="rounded-lg bg-card border border-border overflow-hidden">
         <div className="px-5 py-3 border-b border-border flex items-center gap-2">
-          <Activity className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-medium">Device Telemetry Summary</h2>
+                    <h2 className="text-sm font-medium">Device Telemetry Summary</h2>
         </div>
         {/* Mobile */}
         <div className="md:hidden space-y-3 p-4">
@@ -224,7 +217,7 @@ export default function GatewayDetailPage({ params }: { params: Promise<{ id: st
                 { label: "Metric", value: <span className="text-sm">{t.metric}</span> },
                 { label: "Current", value: <span className="font-mono-data text-sm">{t.value}</span> },
                 { label: "Usage", value: <span className="font-mono-data text-xs">{t.numericPct}%</span> },
-                { label: "Status", value: <span className={`inline-flex px-2 py-0.5 rounded-md text-[11px] font-medium ${t.status === "warning" ? "bg-[#F2994A]/10 text-[#F2994A]" : "bg-[#22C55E]/10 text-[#22C55E]"}`}>{t.status}</span> },
+                { label: "Status", value: <span className={`inline-flex px-2 py-0.5 rounded-md text-[11px] font-medium ${t.status === "warning" ? "bg-[#EB5757]/10 text-[#EB5757]" : "bg-[#22C55E]/10 text-[#22C55E]"}`}>{t.status}</span> },
               ]}
             />
           ))}
@@ -241,14 +234,14 @@ export default function GatewayDetailPage({ params }: { params: Promise<{ id: st
               <div className="flex items-center gap-2">
                 <div className="flex-1 h-1.5 bg-secondary rounded-full overflow-hidden max-w-[200px]">
                   <div
-                    className={`h-full rounded-full ${t.status === "warning" ? "bg-[#F2994A]" : "bg-[#22C55E]"}`}
+                    className={`h-full rounded-full ${t.status === "warning" ? "bg-[#EB5757]" : "bg-[#22C55E]"}`}
                     style={{ width: `${t.numericPct}%` }}
                   />
                 </div>
                 <span className="font-mono-data text-xs text-muted-foreground">{t.numericPct}%</span>
               </div>
               <span className={`inline-flex px-2 py-0.5 rounded-md text-[11px] font-medium ${
-                t.status === "warning" ? "bg-[#F2994A]/10 text-[#F2994A]" : "bg-[#22C55E]/10 text-[#22C55E]"
+                t.status === "warning" ? "bg-[#EB5757]/10 text-[#EB5757]" : "bg-[#22C55E]/10 text-[#22C55E]"
               }`}>
                 {t.status}
               </span>

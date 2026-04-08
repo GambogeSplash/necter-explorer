@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { use, useState } from "react";
-import { ArrowLeft, Cpu, Shield, HardDrive, Wifi, ChevronDown, ChevronRight, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Shield, HardDrive, Wifi, ChevronDown, ChevronRight, CheckCircle2 } from "lucide-react";
 import { devices } from "@/lib/mock-data";
 import { HashLink } from "@/components/hash-link";
 import { StatusBadge } from "@/components/status-badge";
@@ -47,22 +47,19 @@ export default function DeviceDetailPage({ params }: { params: Promise<{ id: str
     { label: "Owner", value: <HashLink hash={device.owner} type="address" /> },
     { label: "Status", value: <StatusBadge status={device.status} /> },
     { label: "Staked", value: <span className="font-mono-data">{Number(device.stakedAmount).toLocaleString()} NECTA</span> },
-    { label: "Uptime", value: <span className={`font-mono-data ${device.uptime > 95 ? "text-[#22C55E]" : device.uptime > 80 ? "text-[#F2994A]" : "text-[#EB5757]"}`}>{device.uptime.toFixed(1)}%</span> },
+    { label: "Uptime", value: <span className={`font-mono-data ${device.uptime > 95 ? "text-[#22C55E]" : device.uptime > 80 ? "text-[#EB5757]" : "text-[#EB5757]"}`}>{device.uptime.toFixed(1)}%</span> },
     { label: "Metadata URI", value: <span className="font-mono-data text-xs text-muted-foreground">{device.metadataURI}</span> },
     { label: "Attestations", value: <span className="font-mono-data">{device.attestationCount}</span> },
   ];
 
   return (
-    <div className="px-2.5 py-2 space-y-4">
+    <div className="max-w-[1480px] mx-auto px-2.5 py-2 space-y-4">
       <Link href="/depin" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 w-fit">
         <ArrowLeft className="h-3.5 w-3.5" /> Back to DePIN
       </Link>
 
       <div className="flex items-center gap-3">
-        <div className="rounded-lg bg-secondary p-2">
-          <Cpu className="h-5 w-5 text-primary" />
-        </div>
-        <h1 className="text-lg font-semibold tracking-tight">Device {device.deviceId}</h1>
+        <h1 className="text-xl font-semibold tracking-tight">Device {device.deviceId}</h1>
         <StatusBadge status={device.status} />
       </div>
 
@@ -111,8 +108,7 @@ function AttestationHistory() {
   return (
     <div className="rounded-lg bg-card border border-border overflow-hidden">
       <div className="px-5 py-3 border-b border-border flex items-center gap-2">
-        <Shield className="h-4 w-4 text-muted-foreground" />
-        <h2 className="text-sm font-medium">Attestation History</h2>
+                <h2 className="text-sm font-medium">Attestation History</h2>
       </div>
       {/* Mobile */}
       <div className="md:hidden space-y-3 p-4">
@@ -122,7 +118,7 @@ function AttestationHistory() {
               onClick={() => toggle(att.id)}
               rows={[
                 { label: "ID", value: <span className="font-mono-data text-xs">{att.id}</span> },
-                { label: "Proof", value: <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium ${att.proofType === "zk" ? "bg-[#9985FF]/10 text-[#9985FF]" : "bg-[#6E9FFF]/10 text-[#6E9FFF]"}`}>{att.proofType}</span> },
+                { label: "Proof", value: <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium ${att.proofType === "zk" ? "bg-[#6E9FFF]/10 text-[#6E9FFF]" : "bg-[#6E9FFF]/10 text-[#6E9FFF]"}`}>{att.proofType}</span> },
                 { label: "Status", value: <StatusBadge status={att.status} /> },
                 { label: "Time", value: <TimeAgo timestamp={att.timestamp} /> },
               ]}
@@ -166,7 +162,7 @@ function AttestationHistory() {
               <span
                 className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium w-fit ${
                   att.proofType === "zk"
-                    ? "bg-[#9985FF]/10 text-[#9985FF]"
+                    ? "bg-[#6E9FFF]/10 text-[#6E9FFF]"
                     : "bg-[#6E9FFF]/10 text-[#6E9FFF]"
                 }`}
               >
